@@ -467,7 +467,7 @@ def corner_impl(
     return fig
 
 
-def quantile(x, q, weights=None):
+def quantile(x, q, weights=None, axis=None):
     """
     Compute sample quantiles with support for weighted samples.
 
@@ -507,9 +507,13 @@ def quantile(x, q, weights=None):
         raise ValueError("Quantiles must be between 0 and 1")
 
     if weights is None:
-        return np.percentile(x, list(100.0 * q))
+        return np.percentile(x, list(100.0 * q), axis=axis)
     else:
         weights = np.atleast_1d(weights)
+        if axis is None:
+            return _quantile(x, q, weights)
+
+def _quantile(x, q, weights):
         if len(x) != len(weights):
             raise ValueError("Dimension mismatch: len(weights) != len(x)")
         idx = np.argsort(x)
@@ -518,7 +522,6 @@ def quantile(x, q, weights=None):
         cdf /= cdf[-1]
         cdf = np.append(0, cdf)
         return np.interp(q, cdf, x[idx]).tolist()
-
 
 def hist2d(
     x,
