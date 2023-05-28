@@ -22,6 +22,7 @@ from matplotlib.ticker import (
     NullFormatter,
     NullLocator,
     ScalarFormatter,
+    AutoMinorLocator,
 )
 
 try:
@@ -295,6 +296,8 @@ def corner_impl(
             _set_ylim(new_fig, ax, [0, 1.1 * np.max(n)])
 
         ax.set_yticklabels([])
+        ax.xaxis.set_minor_locator(AutoMinorLocator())
+        ax.yaxis.set_minor_locator(AutoMinorLocator())
         if max_n_ticks == 0:
             ax.xaxis.set_major_locator(NullLocator())
             ax.yaxis.set_major_locator(NullLocator())
@@ -796,6 +799,8 @@ def hist2d(
     _set_ylim(new_fig, ax, range[1])
     ax.set_xscale(axes_scale[0])
     ax.set_yscale(axes_scale[1])
+    ax.xaxis.set_minor_locator(AutoMinorLocator())
+    ax.yaxis.set_minor_locator(AutoMinorLocator())
 
 
 def overplot_lines(fig, xs, reverse=False, **kwargs):
