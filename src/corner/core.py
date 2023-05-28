@@ -239,6 +239,8 @@ def corner_impl(
             x0 = np.array(list(zip(bins_1d[:-1], bins_1d[1:]))).flatten()
             y0 = np.array(list(zip(n, n))).flatten()
             ax.plot(x0, y0, **hist_kwargs)
+        if i == 0:
+            ax.legend(loc='upper right', bbox_to_anchor=(2.06, 1))
 
         # Plot quantiles if wanted.
         if len(quantiles) > 0:
