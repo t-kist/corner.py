@@ -49,6 +49,7 @@ def corner_impl(
     title_kwargs=None,
     truths=None,
     truth_color="#4682b4",
+    show_ylabels=True,
     scale_hist=False,
     quantiles=None,
     title_quantiles=None,
@@ -445,6 +446,8 @@ def corner_impl(
                     else:
                         ax.set_ylabel(labels[i], **label_kwargs)
                         ax.yaxis.set_label_coords(-0.3 - labelpad, 0.5)
+                    if show_ylabels is False:
+                        ax.set_ylabel("")
 
                 # use MathText for axes ticks
                 if axes_scale[i] == "linear":
@@ -453,6 +456,8 @@ def corner_impl(
                     )
                 elif axes_scale[i] == "log":
                     ax.yaxis.set_major_formatter(LogFormatterMathtext())
+                if show_ylabels is False:
+                    ax.set_yticklabels([])
 
     if truths is not None:
         overplot_lines(fig, truths, reverse=reverse, color=truth_color)
