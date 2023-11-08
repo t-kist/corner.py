@@ -48,6 +48,8 @@ def corner_impl(
     title_fmt=".2f",
     title_kwargs=None,
     truths=None,
+    quantile_color="#4682b4",
+    quantile_style="dashed",
     truth_color="#4682b4",
     show_ylabels=True,
     scale_hist=False,
@@ -240,14 +242,12 @@ def corner_impl(
             x0 = np.array(list(zip(bins_1d[:-1], bins_1d[1:]))).flatten()
             y0 = np.array(list(zip(n, n))).flatten()
             ax.plot(x0, y0, **hist_kwargs)
-        if i == 0:
-            ax.legend(loc='upper right', bbox_to_anchor=(2.06, 1))
 
         # Plot quantiles if wanted.
         if len(quantiles) > 0:
             qvalues = quantile(x, quantiles, weights=weights)
             for q in qvalues:
-                ax.axvline(q, ls="dashed", color=color)
+                ax.axvline(q, ls=quantile_style, color=quantile_color)
 
             if verbose:
                 print("Quantiles:")
@@ -543,6 +543,7 @@ def hist2d(
     plot_datapoints=True,
     plot_density=True,
     plot_contours=True,
+    plot_edges=True,
     no_fill_contours=False,
     fill_contours=False,
     contour_kwargs=None,
@@ -799,10 +800,10 @@ def hist2d(
         ax.pcolor(X, Y, H.max() - H.T, cmap=density_cmap, **pcolor_kwargs)
 
     # Plot the contour edge colors.
-    if plot_contours:
+    if plot_contours and plot_edges:
         if contour_kwargs is None:
             contour_kwargs = dict()
-        contour_kwargs["colors"] = contour_kwargs.get("colors", color)
+        contour_kwargs["colors"] = [contour_kwargs.get("colors", color)]
         ax.contour(X2, Y2, H2.T, V, **contour_kwargs)
 
     _set_xlim(new_fig, ax, range[0])
